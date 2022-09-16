@@ -7,13 +7,14 @@
 
 #include <stdlib.h>
 #include <stdbool.h>
+typedef long long unsigned llu;
 /*
  * Marks with 1 numbers that are not prime
  */
-void mark(char* arr, int size, int curr);
+void mark(char* arr, llu size, llu curr);
 /*
- * Returns -1 if not found
+ * Returns 0 if not found
  */
-int find_unmarked(char* arr, int size, int curr);
+llu find_unmarked(char* arr, llu size, llu curr);
 
 #endif //TBO_CRIVO_H

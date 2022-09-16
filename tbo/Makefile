@@ -4,6 +4,9 @@ compile:
 run:
 	./exec
 
+time:
+	time ./exec
+
 valgrind:
 	valgrind ./exec
 
