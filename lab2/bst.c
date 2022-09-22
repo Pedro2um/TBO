@@ -22,7 +22,8 @@ void    insert_bst(bst* t, int data){
         bst* prev = t;
         bst* curr = t;
         while(curr != NULL){
-                if(data < curr->data){
+                if(data == curr->data) return;
+                else if(data < curr->data){
                         flag = 0;
                         prev = curr;
                         curr = curr->left; 
@@ -36,6 +37,14 @@ void    insert_bst(bst* t, int data){
 
         if(flag == 0)   prev->left = new_bst(data);        
         else            prev->right = new_bst(data); 
+}
+//int x = 0;
+int     height_bst(bst* t){
+        if(t == NULL) return 0;
+        //printf("%d\n", x++);
+        int     lh = height_bst(t->left);
+        int     rh = height_bst(t->right);
+        return 1 + MAX(lh, rh) ;
 }
 
 void    free_bst(bst* t){
