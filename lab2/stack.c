@@ -35,13 +35,14 @@ bst*    top(stack* s){
         if(s->top == -1) return NULL;
         return s->data[s->top];
 }
-void    pop(stack* s){
+bst*    pop(stack* s){
         if(s->top == -1){
                 //perror("STACK IS EMPTY");
-                return;
+                return NULL;
                 //exit(1);
         }
         s->top -= 1;
+        return s->data[s->top + 1];
 }
 void    free_stack(stack* s){
         free(s->data);
@@ -49,6 +50,6 @@ void    free_stack(stack* s){
 }
 
 bool    empty_stack(stack* s){
-        return s->top >= 0;
+        return s->top == -1;
 }
 

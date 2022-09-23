@@ -20,13 +20,87 @@ int main(){
                 //pop(s);
                 //puts("k");
         }
+        
+        clock_t start = clock();
 
         rec_preorder(t, print);
+
+        clock_t end = clock();
+
         
-        puts("\n\n\n");
+
+        fprintf(stderr, "REC_PREORDER %lf\n", (double)(end - start) / CLOCKS_PER_SEC);
+
+        /// @brief ////////////////////////////////////////////////////////
+        /// @return 
+
+        start = clock();
+
+        rec_inorder(t, print);
+
+        end = clock();
+
+        fprintf(stderr, "REC_INORDER %lf\n", (double)(end - start) / CLOCKS_PER_SEC);
+
+        /// @brief /////////////////////////////////////////////////////////
+        /// @return 
+
+        start = clock();
+
+        rec_postorder(t, print);
+
+        end = clock();
+
+        
+
+        fprintf(stderr, "REC_POSTORDER %lf\n", (double)(end - start) / CLOCKS_PER_SEC);
+
+        /// @brief ////////////////////////////////////////////////////////
+        /// @return 
+
+        //////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////
+
+        start = clock();
 
         itr_preorder(t, print);
+
+        end = clock();
+
         
+        fprintf(stderr, "ITR_PREORDER %lf\n", (double)(end - start) / CLOCKS_PER_SEC);
+
+        /// @brief ////////////////////////////////////////////////////////
+        /// @return 
+
+        start = clock();
+
+        itr_inorder(t, print);
+
+        end = clock();
+
+        fprintf(stderr, "ITR_INORDER %lf\n", (double)(end - start) / CLOCKS_PER_SEC);
+
+        /// @brief /////////////////////////////////////////////////////////
+        /// @return 
+
+        start = clock();
+
+        itr_postorder(t, print);
+
+        end = clock();
+
+
+
+        fprintf(stderr, "ITR_POSTORDER %lf\n", (double)(end - start) / CLOCKS_PER_SEC);
+
+        /// @brief ////////////////////////////////////////////////////////
+        /// @return
+       
         free_bst(t);
         free_stack(s);
         return 0;

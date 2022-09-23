@@ -48,7 +48,7 @@ int     height_bst(bst* t){
         return 1 + MAX(lh, rh) ;
 }
 void    print(bst* t){
-        printf("%d\n", t->data);
+        printf("%d\n", getdata_bst(t));
 }
 int     getdata_bst(bst* t){
         return t->data;
@@ -109,42 +109,52 @@ void    itr_inorder(bst* t, void(*visit)(bst*)){
         stack*  temp = new_stack(MAX_TEMP_STACK);
         bst*    curr = t;
         while(!empty_stack(temp) || curr != NULL){
+                //puts("X");
                 if(curr != NULL){
                         push(temp, curr);
-                        curr = curr->left;                
+                        curr = curr->left;   
+                        //puts("Y");             
                 }
                 else{
-                        curr = top(temp);
-                        pop(temp);
+                        curr = pop(temp);
+                        //pop(temp);
                         visit(curr);
                         curr = curr->right;
+                        //puts("Z");
                 }
         }
+        if(empty_stack(temp) == false) perror("DEU RUIM AQUI");
         free_stack(temp);
 }
 
 void    itr_postorder(bst* t, void(*visit)(bst*)){
         stack*  temp = new_stack(MAX_TEMP_STACK);
-        bst*    curr = t;
         bst*    last = NULL;
-        bst*    peek = NULL;
+        bst*    curr = t;
         while(!empty_stack(temp) || curr != NULL){
                 if(curr != NULL){
+                        //puts("X");
                         push(temp, curr);
-                        curr = curr->left;        
+                        curr = curr->left;
                 }
-                else{
-                        peek = top(temp);
-                        if(peek->right != NULL && last->right != peek->right){
+                else{   
+                        //puts("Y");
+
+                        bst* peek = top(temp);
+                        if(peek != NULL && peek->right != NULL && last != peek->right){
                                 curr = peek->right;
+                                //puts("Z");
                         }
                         else{
-                                visit(peek);
-                                last = top(temp);
-                                pop(temp);                        
+                                //puts("W");
+                                if(peek != NULL) visit(peek);
+                                last = pop(temp);
+                                curr = NULL;
                         }
                 }
+
         }
+        
         free_stack(temp);
 }
 

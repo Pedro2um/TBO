@@ -10,7 +10,7 @@ typedef struct stack stack;
 stack*  new_stack(int size);
 void    push(stack* s, bst* data);
 bst*    top(stack* s);
-void    pop(stack* s);
+bst*    pop(stack* s);
 void    free_stack(stack* s);
 bool    empty_stack(stack* s);
 
