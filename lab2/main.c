@@ -10,7 +10,7 @@ int main(){
         bst* t = new_bst(0);
         int n;
         scanf("%d", &n);
-        stack* s = new_stack(n);
+        //stack* s = new_stack(n);
         for(int i = 0; i < n; i++){
                 int x;
                 scanf("%d", &x);
@@ -21,7 +21,7 @@ int main(){
                 //puts("k");
         }
         
-        clock_t start = clock();
+        /*clock_t start = clock();
 
         rec_preorder(t, print);
 
@@ -100,8 +100,8 @@ int main(){
 
         /// @brief ////////////////////////////////////////////////////////
         /// @return
-       
+       */
         free_bst(t);
-        free_stack(s);
+        //free_stack(s);
         return 0;
 }
