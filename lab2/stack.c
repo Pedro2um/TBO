@@ -23,8 +23,9 @@ stack*    new_stack(int size){
 }
 void    push(stack* s, bst* data){
         if(s->top + 1 == s->MAX){
-                perror("STACK IS FULL\n");
-                exit(1);
+                //perror("STACK IS FULL\n");
+                //exit(1);
+                return;
         }
         s->top += 1;
         s->data[s->top] = data;
@@ -36,8 +37,9 @@ bst*    top(stack* s){
 }
 void    pop(stack* s){
         if(s->top == -1){
-                perror("STACK IS EMPTY\n");
-                exit(1);
+                //perror("STACK IS EMPTY");
+                return;
+                //exit(1);
         }
         s->top -= 1;
 }

@@ -47,7 +47,9 @@ int     height_bst(bst* t){
         int     rh = height_bst(t->right);
         return 1 + MAX(lh, rh) ;
 }
-
+void    print(bst* t){
+        printf("%d\n", t->data);
+}
 int     getdata_bst(bst* t){
         return t->data;
 }
@@ -73,14 +75,7 @@ void    rec_postorder(bst* t, void (*visit)(bst*)){
         rec_postorder(t->right, visit);
         visit(t);
 }
-/*
-static void     now(stack* s, bst* t){
-        if(t == NULL) return;
-        visit(t);
-        push(s, t->right);
-        push(s, t->left);
-        visit(top())
-}*/
+
 void    itr_preorder(bst* t, void (*visit)(bst*)){
         stack*  temp = new_stack(MAX_TEMP_STACK);
         bst*    curr = t;
@@ -93,7 +88,64 @@ void    itr_preorder(bst* t, void (*visit)(bst*)){
                 }
                 curr = top(temp);
                 pop(temp);
-        }while(!empty_stack(temp));
+        }while(curr != NULL);
+        
+        /*if(t == NULL) return;
+        push(temp, t);
+        while(!empty_stack(temp)){
+                curr = top(temp);
+                visit(curr);
+                pop(temp);
+                if(curr->right != NULL)
+                        push(temp, curr->right);
+                if(curr->left != NULL)
+                        push(temp, curr->left);
+        }
+        */
+        free_stack(temp);
+}
+
+void    itr_inorder(bst* t, void(*visit)(bst*)){
+        stack*  temp = new_stack(MAX_TEMP_STACK);
+        bst*    curr = t;
+        while(!empty_stack(temp) || curr != NULL){
+                if(curr != NULL){
+                        push(temp, curr);
+                        curr = curr->left;                
+                }
+                else{
+                        curr = top(temp);
+                        pop(temp);
+                        visit(curr);
+                        curr = curr->right;
+                }
+        }
+        free_stack(temp);
+}
+
+void    itr_postorder(bst* t, void(*visit)(bst*)){
+        stack*  temp = new_stack(MAX_TEMP_STACK);
+        bst*    curr = t;
+        bst*    last = NULL;
+        bst*    peek = NULL;
+        while(!empty_stack(temp) || curr != NULL){
+                if(curr != NULL){
+                        push(temp, curr);
+                        curr = curr->left;        
+                }
+                else{
+                        peek = top(temp);
+                        if(peek->right != NULL && last->right != peek->right){
+                                curr = peek->right;
+                        }
+                        else{
+                                visit(peek);
+                                last = top(temp);
+                                pop(temp);                        
+                        }
+                }
+        }
+        free_stack(temp);
 }
 
 void    free_bst(bst* t){
