@@ -20,6 +20,8 @@ void    itr_preorder(bst* t, void (*visit)(bst*));
 void    itr_inorder(bst* t, void (*visit)(bst*));
 void    itr_postorder(bst* t, void (*visit)(bst*));
 
+void    itr_levelorder(bst* t, void(*visit)(bst*));
+
 void    insert_bst(bst* t, int data);
 void    free_bst(bst* t);
 

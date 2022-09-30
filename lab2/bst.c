@@ -1,6 +1,7 @@
 
 #include "bst.h"
 #include "stack.h"
+#include "queue.h"
 #define MAX_TEMP_STACK 1000
 struct bst{
         int data;
@@ -104,7 +105,6 @@ void    itr_preorder(bst* t, void (*visit)(bst*)){
         */
         free_stack(temp);
 }
-
 void    itr_inorder(bst* t, void(*visit)(bst*)){
         stack*  temp = new_stack(MAX_TEMP_STACK);
         bst*    curr = t;
@@ -126,7 +126,6 @@ void    itr_inorder(bst* t, void(*visit)(bst*)){
         if(empty_stack(temp) == false) perror("DEU RUIM AQUI");
         free_stack(temp);
 }
-
 void    itr_postorder(bst* t, void(*visit)(bst*)){
         stack*  temp = new_stack(MAX_TEMP_STACK);
         bst*    last = NULL;
@@ -156,6 +155,37 @@ void    itr_postorder(bst* t, void(*visit)(bst*)){
         }
         
         free_stack(temp);
+}
+
+void    itr_levelorder(bst* t, void(*visit)(bst*)){
+        if(t == NULL) return;
+        queue* temp = new_queue();
+        enqueue(temp, t);
+
+        while(empty_queue(temp) == false){
+                bst* curr = front(temp);
+                if(empty_queue(temp) == false)
+                    dequeue(temp);
+
+                //if(flag == 0) break;
+                //flag -= 1;
+                if(curr != NULL){
+                        visit(curr);
+
+                        if(curr->left != NULL) {
+                            enqueue(temp, curr->left);
+
+                        }
+
+                        if(curr->right != NULL) {
+                            enqueue(temp, curr->right);
+
+                        }
+
+                }
+
+        }
+        if(temp != NULL) free_queue(temp);
 }
 
 void    free_bst(bst* t){

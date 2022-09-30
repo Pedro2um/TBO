@@ -2,25 +2,33 @@
 #include <time.h>
 #include "bst.h"
 #include "stack.h"
-
+#include "queue.h"
 
 
 int main(){
         srand(time(NULL));
         bst* t = new_bst(0);
         int n;
+
         scanf("%d", &n);
         //stack* s = new_stack(n);
+
         for(int i = 0; i < n; i++){
                 int x;
                 scanf("%d", &x);
+               
                 insert_bst(t, x);
+                //enqueue(q, new_bst(x));
+
                 //push(s, x);
                 //printf("STACK : %d\n", top(s));
                 //pop(s);
                 //puts("k");
         }
-        
+        //travel_queue(q);
+        rec_preorder(t, print);
+        puts("\n\n");
+        //itr_levelorder(t, print);
         /*clock_t start = clock();
 
         rec_preorder(t, print);
@@ -101,7 +109,10 @@ int main(){
         /// @brief ////////////////////////////////////////////////////////
         /// @return
        */
-        free_bst(t);
+        
+
+        //free_bst(t);
+        
         //free_stack(s);
         return 0;
 }

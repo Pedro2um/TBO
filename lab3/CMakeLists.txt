@@ -7,4 +7,4 @@ include_directories(.)
 
 add_executable(lab3
         item.h
-        main.c select_sort.c)
+        main.c select_sort.c insert_sort.c bubble_sort.c shaker_sort.c)
