@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include "item.h"
 #define  CUTTOFF        16
+#define  SZ2             (sz+sz)
+#define  MIN(x, y)       ((x)<(y)?(x):(y))
 
 void insertion_sort(Item* a, int lo, int hi){
     for(int i = lo; i <= hi; i++) {
@@ -23,7 +25,7 @@ void insertion_sort(Item* a, int lo, int hi){
 void sort(Item* a, int lo, int hi){
         Item* aux = malloc((hi-lo+1)*sizeof(Item));
         if(aux==NULL) exit(1);
-        merge_sort_top_down_cut_off_and_skip(a, aux, lo, hi);
+        merge_sort_bottom_up(a, aux, lo, hi);
         free(aux);
 }
 
@@ -85,3 +87,64 @@ void merge_sort_top_down_cut_off_and_skip(Item* a, Item* aux, int lo, int hi){
         if(!less(a[m+1], a[m])) return;
         merge1(a, aux, lo, m, hi);
 }
+
+// Version 5
+
+void merge_sort_bottom_up(Item* a, Item* aux, int lo, int hi){
+        int N = (hi-lo)+1;
+        int y = N-1;
+        int x;
+
+        for(int sz = 1; sz <N; sz = SZ2)
+                for(int lo = 0; lo <N-sz; lo += SZ2)
+                        x = lo + SZ2 - 1, merge1(a, aux, lo, (lo+sz-1), MIN(x,y));
+        
+}
+
+// Version 6
+
+void merge_sort_bottom_up_cut_off(Item* a, Item* aux, int lo, int hi){
+        int N = (hi-lo)+1;
+        int y = N-1;
+        int x;
+        
+        if(hi <= lo + CUTTOFF - 1){
+                insertion_sort(a, lo, hi);
+                return;
+        }
+
+        for(int sz = 1; sz <N; sz = SZ2)
+                for(int lo = 0; lo <N-sz; lo += SZ2){
+                        x = lo + SZ2 - 1;
+                        if(MIN(x,y) <= lo + CUTTOFF - 1) {
+                                insertion_sort(a, lo, MIN(x,y));
+                        }
+                        else {
+                                merge1(a, aux, lo, (lo+sz-1), MIN(x,y));
+                        }
+                }
+}
+
+// Version 7
+// TODO: implement the skip optimization
+void merge_sort_bottom_up_cut_off_merge_skip(Item* a, Item* aux, int lo, int hi){
+        int N = (hi-lo)+1;
+        int y = N-1;
+        int x;
+        
+        if(hi <= lo + CUTTOFF - 1){
+                insertion_sort(a, lo, hi);
+                return;
+        }
+
+        for(int sz = 1; sz <N; sz = SZ2)
+                for(int lo = 0; lo <N-sz; lo += SZ2){
+                        x = lo + SZ2 - 1;
+                        if(MIN(x,y) <= lo + CUTTOFF - 1) {
+                                insertion_sort(a, lo, MIN(x,y));
+                        }
+                        else {
+                                merge1(a, aux, lo, (lo+sz-1), MIN(x,y));
+                        }
+                }
+}   
