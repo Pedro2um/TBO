@@ -4,7 +4,7 @@
 #include "item.h"
 #define  CUTTOFF        16
 #define  SZ2             (sz+sz)
-#define  MIN(x, y)       ((x)<(y)?(x):(y))
+#define  MIN(x, y)       (((x)<(y))?(x):(y))
 
 void insertion_sort(Item* a, int lo, int hi){
     for(int i = lo; i <= hi; i++) {
@@ -89,16 +89,29 @@ void merge_sort_top_down_cut_off_and_skip(Item* a, Item* aux, int lo, int hi){
 }
 
 // Version 5
-
+// Tem merda aqui!
 void merge_sort_bottom_up(Item* a, Item* aux, int lo, int hi){
         int N = (hi-lo)+1;
         int y = N-1;
         int x;
-
-        for(int sz = 1; sz <N; sz = SZ2)
-                for(int lo = 0; lo <N-sz; lo += SZ2)
-                        x = lo + SZ2 - 1, merge1(a, aux, lo, (lo+sz-1), MIN(x,y));
-        
+        /*
+        for(int sz = 1; sz < N; sz = SZ2){
+                for(int lo = 0; lo < (N-sz); lo += SZ2){
+                        x = lo + SZ2 - 1;
+                        merge1(a, aux, lo, (lo+sz-1), MIN(x,y));
+                }
+        }
+        //merge1(a, aux, lo, (lo + (hi-lo)/2), hi);
+        */
+        for (int sz = 1; sz < N; sz = SZ2) {
+                for (int lo = 0; lo < N-sz; lo += SZ2) {
+                        int x = lo + SZ2 - 1;
+                        int last = MIN(x,y);
+                        int mid = lo + (last-lo)/2;
+                        merge1(a, aux, lo, mid, last);
+                }
+        }
+  
 }
 
 // Version 6
@@ -113,7 +126,7 @@ void merge_sort_bottom_up_cut_off(Item* a, Item* aux, int lo, int hi){
                 return;
         }
 
-        for(int sz = 1; sz <N; sz = SZ2)
+        for(int sz = 1; sz < N; sz = SZ2){
                 for(int lo = 0; lo <N-sz; lo += SZ2){
                         x = lo + SZ2 - 1;
                         if(MIN(x,y) <= lo + CUTTOFF - 1) {
@@ -123,6 +136,8 @@ void merge_sort_bottom_up_cut_off(Item* a, Item* aux, int lo, int hi){
                                 merge1(a, aux, lo, (lo+sz-1), MIN(x,y));
                         }
                 }
+        }
+
 }
 
 // Version 7
@@ -140,6 +155,7 @@ void merge_sort_bottom_up_cut_off_merge_skip(Item* a, Item* aux, int lo, int hi)
         for(int sz = 1; sz <N; sz = SZ2)
                 for(int lo = 0; lo <N-sz; lo += SZ2){
                         x = lo + SZ2 - 1;
+                        
                         if(MIN(x,y) <= lo + CUTTOFF - 1) {
                                 insertion_sort(a, lo, MIN(x,y));
                         }
