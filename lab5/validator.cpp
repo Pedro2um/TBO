@@ -9,7 +9,12 @@ int main(){
 	cin >> n;
 	for(int i = 0; i < n; i++)
 		cin >> a[i];
+	clock_t  start = clock();
 	sort(a.begin(), a.begin()+n);
+	clock_t  end = clock();
+	double seconds = ((double)end - start) / CLOCKS_PER_SEC;
+    cout << "Time in seconds = " << seconds << "\n";
+	cout << "Sorted array\n";
 	for(int i = 0; i < n; i++)
 		cout << " " << a[i];
 	cout << "\n";

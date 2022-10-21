@@ -4,7 +4,7 @@
 #include <time.h>
 #include "item.h"
 #include <math.h>
-
+#include "stack.h"
 extern void sort(Item* a, int lo, int hi);
 
 int main(int argc, char* argv[]){
@@ -24,6 +24,6 @@ int main(int argc, char* argv[]){
     puts("Sorted array");
     for(int i = 0; i < N; i++) printf(" %d", arr[i]);
     puts("");
-
+    
     return 0;
 }

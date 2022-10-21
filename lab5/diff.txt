@@ -1,0 +1,4 @@
+1c1
+< Time in seconds = 0.001648
+---
+> Time in seconds = 0.037578

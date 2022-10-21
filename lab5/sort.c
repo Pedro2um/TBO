@@ -1,45 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <sys/time.h>
 #include "item.h"
-#define		push2(A,B)	push(A);push(B)
+#include "stack.h"
+#define		push2(P,A,B)	push(P,B);push(P,A)
 #define		CUTOFF	8
-#define 	MAX_STACK	10000001
-typedef struct stack stack;
-struct stack{
-	Item s[MAX_STACK+1];
-	int top_ptr;
-};
 
-stack local;
 
-static void stack_init(){
-	local.top_ptr = -1;
-}
-
-static void push(Item a){
-	if(local.top_ptr + 1 <= MAX_STACK) {	
-		local.top_ptr++;
-		local.s[local.top_ptr] = a;
-	}
-	else exit(1);
-}
-
-static Item pop(){
-	if(local.top_ptr >= 0){
-		local.top_ptr--;	
-		return local.s[local.top_ptr+1];
-	}
-	else exit(1);
-}
-
-static int stack_empty(){
-	if(local.top_ptr == -1) return 1;
-	return 0;	
-}
-
-static void stack_finish(){
-	local.top_ptr = -1;
-}
 
 
 void quick_sort_topdown(Item* a, int lo, int hi);
@@ -54,12 +22,26 @@ void quick_sort_bottom_up(Item* a, int lo, int hi);
 
 void quick_sort_bottom_up_median_of_three_and_cutoff(Item* a, int lo, int hi);
 
-void insertion_sort(Item* a, int lo, int hi);
+void quick_sort_bottom_up_median_of_three_and_cutoff_shuffle(Item* a, int lo, int hi);
 
+void insertion_sort(Item* a, int lo, int hi);
+void shuffle(Item *a, int N);
 
 void sort(Item* a, int lo, int hi){
-        quick_sort_bottom_up(a, lo, hi);
+        quick_sort_bottom_up_median_of_three_and_cutoff(a, lo, hi);
 }
+
+
+void shuffle(Item *a, int N){
+
+	struct timeval tv; gettimeofday(&tv, NULL);
+	srand48(tv.tv_usec);
+	for (int i = N-1; i > 0; i--) {
+		int j = (unsigned int) (drand48()*(i+1));
+		exch(a[i], a[j]);
+	}
+}
+
 
 void insertion_sort(Item* a, int lo, int hi){
 	for(int i = lo; i <= hi; i++) {
@@ -190,30 +172,125 @@ void quick_sort_topdown_median_of_three_and_cutoff(Item* a, int lo, int hi){
 
 //Version 5
 void quick_sort_bottom_up(Item* a, int lo, int hi){
-	stack_init();
-	push2(lo,hi);
-	while(stack_empty() == 0){
-		lo = pop();
-		hi = pop();
+	stack* p = stack_init();
+
+	push2(p,lo,hi);
+	while(stack_empty(p) == 0){
+		lo = pop(p);
+		hi = pop(p);
 		if(hi <= lo) continue;
 		int i = partition(a, lo, hi);
 		if( (i-lo) > (hi-i) ){
-			push(lo);
-			push(i-1);
+			push2(p,lo,i-1);
+			push2(p,i+1,hi);
 			
-			push(i+1);
-			push(hi);
 		}
 		else {
-			push(i+1);
-			push(hi);
-
-			push(lo);
-			push(i-1);
+			push2(p,i+1,hi);
+			push2(p,lo,i-1);
+			
 
 		}
 	}
-	stack_finish();	
+	stack_finish(p);	
+}
+
+//Version 6
+void quick_sort_bottom_up_median_of_three_and_cutoff(Item* a, int lo, int hi){
+	stack* p = stack_init();
+
+	push2(p,lo,hi);
+	while(stack_empty(p) == 0){
+		lo = pop(p);
+		hi = pop(p);
+		if(hi <= lo + CUTOFF - 1) {
+			insertion_sort(a, lo, hi);
+			continue;
+		}
+
+		Item v = a[lo];
+	
+		int lt = lo, gt = hi, j = lo;
+
+		while(j <= gt){
+			if(a[j] < v){
+				exch(a[lt], a[j]);
+				lt++;
+				j++;
+			}
+			else if(a[j] > v){
+				exch(a[j], a[gt]);
+				gt--;
+			}
+			else {
+				j++;
+			}
+		}
+
+
+		int i = partition(a, lo, hi);
+		if( (i-lo) > (hi-i) ){
+			push2(p,lo,i-1);
+			push2(p,i+1,hi);
+			
+		}
+		else {
+			push2(p,i+1,hi);
+			push2(p,lo,i-1);
+			
+
+		}
+	}
+	stack_finish(p);
 }
 
 
+//Version 7
+void quick_sort_bottom_up_median_of_three_and_cutoff_shuffle(Item* a, int lo, int hi){
+	shuffle(a, (hi-lo+1) );
+	stack* p = stack_init();
+
+	push2(p,lo,hi);
+	while(stack_empty(p) == 0){
+		lo = pop(p);
+		hi = pop(p);
+		if(hi <= lo + CUTOFF - 1) {
+			insertion_sort(a, lo, hi);
+			continue;
+		}
+
+		Item v = a[lo];
+	
+		int lt = lo, gt = hi, j = lo;
+
+		while(j <= gt){
+			if(a[j] < v){
+				exch(a[lt], a[j]);
+				lt++;
+				j++;
+			}
+			else if(a[j] > v){
+				exch(a[j], a[gt]);
+				gt--;
+			}
+			else {
+				j++;
+			}
+		}
+
+
+		int i = partition(a, lo, hi);
+		if( (i-lo) > (hi-i) ){
+			push2(p,lo,i-1);
+			push2(p,i+1,hi);
+			
+		}
+		else {
+			push2(p,i+1,hi);
+			push2(p,lo,i-1);
+			
+
+		}
+	}
+	stack_finish(p);
+}
